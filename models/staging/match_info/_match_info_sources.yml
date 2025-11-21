@@ -13,9 +13,8 @@ sources:
 
     tables:
 
-      - name: MATCH_DATA
-        config:
-          loaded_at_field: _fivetran_synced
+      - name: match_data
+
         columns:
           - name: id
             tests:
@@ -222,11 +221,3 @@ sources:
           - name: loser_elixir_average
             tests:
               - not_null
-          - name: _fivetran_synced 
-            tests:
-              - not_null
-
-    config:
-      freshness:
-        warn_after: {count: 600, period: day}
-        error_after: {count: 600, period: day}
