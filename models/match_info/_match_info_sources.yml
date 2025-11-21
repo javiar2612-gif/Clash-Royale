@@ -1,0 +1,232 @@
+version: 2
+
+sources:
+
+  - name: match_info
+    schema: match_info
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" 
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+
+      - name: MATCH_DATA
+        config:
+          loaded_at_field: _fivetran_synced
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique # Sugerido para ID
+          - name: battleTime
+            tests:
+              - not_null
+          - name: arena_id
+            tests:
+              - not_null
+          - name: gameMode_id
+            tests:
+              - not_null
+          - name: average_startingTrophies
+            tests:
+              - not_null
+          - name: winner_tag
+            tests:
+              - not_null
+          - name: winner_startingTrophies
+            tests:
+              - not_null
+          - name: winner_trophyChange
+            tests:
+              - not_null
+          - name: winner_crowns
+            tests:
+              - not_null
+          - name: winner_kingTowerHitPoints # EXCLUIDO: Permite nulos
+          - name: winner_princessTowersHitPoints # EXCLUIDO: Permite nulos
+          - name: winner_clan_tag # EXCLUIDO: Permite nulos
+          - name: winner_clan_badgeId # EXCLUIDO: Permite nulos
+          - name: loser_tag
+            tests:
+              - not_null
+          - name: loser_startingTrophies
+            tests:
+              - not_null
+          - name: loser_trophyChange
+            tests:
+              - not_null
+          - name: loser_crowns
+            tests:
+              - not_null
+          - name: loser_kingTowerHitPoints # EXCLUIDO: Permite nulos
+          - name: loser_clan_tag # EXCLUIDO: Permite nulos
+          - name: loser_clan_badgeId # EXCLUIDO: Permite nulos
+          - name: loser_princessTowersHitPoints # EXCLUIDO: Permite nulos
+          - name: tournamentTag # EXCLUIDO: Permite nulos
+          - name: winner_card1_id
+            tests:
+              - not_null
+          - name: winner_card1_level
+            tests:
+              - not_null
+          - name: winner_card2_id
+            tests:
+              - not_null
+          - name: winner_card2_level
+            tests:
+              - not_null
+          - name: winner_card3_id
+            tests:
+              - not_null
+          - name: winner_card3_level
+            tests:
+              - not_null
+          - name: winner_card4_id
+            tests:
+              - not_null
+          - name: winner_card4_level
+            tests:
+              - not_null
+          - name: winner_card5_id
+            tests:
+              - not_null
+          - name: winner_card5_level
+            tests:
+              - not_null
+          - name: winner_card6_id
+            tests:
+              - not_null
+          - name: winner_card6_level
+            tests:
+              - not_null
+          - name: winner_card7_id
+            tests:
+              - not_null
+          - name: winner_card7_level
+            tests:
+              - not_null
+          - name: winner_card8_id
+            tests:
+              - not_null
+          - name: winner_card8_level
+            tests:
+              - not_null
+          - name: winner_cards_list
+            tests:
+              - not_null
+          - name: winner_totalcard_level
+            tests:
+              - not_null
+          - name: winner_troop_count
+            tests:
+              - not_null
+          - name: winner_structure_count
+            tests:
+              - not_null
+          - name: winner_spell_count
+            tests:
+              - not_null
+          - name: winner_common_count
+            tests:
+              - not_null
+          - name: winner_rare_count
+            tests:
+              - not_null
+          - name: winner_epic_count
+            tests:
+              - not_null
+          - name: winner_legendary_count
+            tests:
+              - not_null
+          - name: winner_elixir_average
+            tests:
+              - not_null
+          - name: loser_card1_id
+            tests:
+              - not_null
+          - name: loser_card1_level
+            tests:
+              - not_null
+          - name: loser_card2_id
+            tests:
+              - not_null
+          - name: loser_card2_level
+            tests:
+              - not_null
+          - name: loser_card3_id
+            tests:
+              - not_null
+          - name: loser_card3_level
+            tests:
+              - not_null
+          - name: loser_card4_id
+            tests:
+              - not_null
+          - name: loser_card4_level
+            tests:
+              - not_null
+          - name: loser_card5_id
+            tests:
+              - not_null
+          - name: loser_card5_level
+            tests:
+              - not_null
+          - name: loser_card6_id
+            tests:
+              - not_null
+          - name: loser_card6_level
+            tests:
+              - not_null
+          - name: loser_card7_id
+            tests:
+              - not_null
+          - name: loser_card7_level
+            tests:
+              - not_null
+          - name: loser_card8_id
+            tests:
+              - not_null
+          - name: loser_card8_level
+            tests:
+              - not_null
+          - name: loser_cards_list
+            tests:
+              - not_null
+          - name: loser_totalcard_level
+            tests:
+              - not_null
+          - name: loser_troop_count
+            tests:
+              - not_null
+          - name: loser_structure_count
+            tests:
+              - not_null
+          - name: loser_spell_count
+            tests:
+              - not_null
+          - name: loser_common_count
+            tests:
+              - not_null
+          - name: loser_rare_count
+            tests:
+              - not_null
+          - name: loser_epic_count
+            tests:
+              - not_null
+          - name: loser_legendary_count
+            tests:
+              - not_null
+          - name: loser_elixir_average
+            tests:
+              - not_null
+          - name: _fivetran_synced 
+            tests:
+              - not_null
+
+    config:
+      freshness:
+        warn_after: {count: 600, period: day}
+        error_after: {count: 600, period: day}
