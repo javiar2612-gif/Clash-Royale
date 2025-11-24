@@ -14,12 +14,17 @@ sources:
     tables:
 
       - name: match_data
+        
+        loaded_at_field: _fivetran_synced
+        freshness:
+          warn_after: {count: 600, period: day}
+          error_after: {count: 600, period: day}
 
         columns:
           - name: id
             tests:
               - not_null
-              - unique # Sugerido para ID
+              - unique 
           - name: battleTime
             tests:
               - not_null
@@ -44,10 +49,10 @@ sources:
           - name: winner_crowns
             tests:
               - not_null
-          - name: winner_kingTowerHitPoints # EXCLUIDO: Permite nulos
-          - name: winner_princessTowersHitPoints # EXCLUIDO: Permite nulos
-          - name: winner_clan_tag # EXCLUIDO: Permite nulos
-          - name: winner_clan_badgeId # EXCLUIDO: Permite nulos
+          - name: winner_kingTowerHitPoints 
+          - name: winner_princessTowersHitPoints 
+          - name: winner_clan_tag 
+          - name: winner_clan_badgeId 
           - name: loser_tag
             tests:
               - not_null
@@ -60,11 +65,11 @@ sources:
           - name: loser_crowns
             tests:
               - not_null
-          - name: loser_kingTowerHitPoints # EXCLUIDO: Permite nulos
-          - name: loser_clan_tag # EXCLUIDO: Permite nulos
-          - name: loser_clan_badgeId # EXCLUIDO: Permite nulos
-          - name: loser_princessTowersHitPoints # EXCLUIDO: Permite nulos
-          - name: tournamentTag # EXCLUIDO: Permite nulos
+          - name: loser_kingTowerHitPoints 
+          - name: loser_clan_tag 
+          - name: loser_clan_badgeId 
+          - name: loser_princessTowersHitPoints 
+          - name: tournamentTag 
           - name: winner_card1_id
             tests:
               - not_null
@@ -221,3 +226,5 @@ sources:
           - name: loser_elixir_average
             tests:
               - not_null
+              
+          - name: _fivetran_synced
