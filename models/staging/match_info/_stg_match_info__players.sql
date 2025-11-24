@@ -32,8 +32,7 @@ latest_player_info AS (
 
 SELECT
     tag::VARCHAR AS tag,                        
-    NULLIF(clan_tag, 'NULL')::VARCHAR AS current_clan_tag, 
-    battleTime::TIMESTAMP_NTZ AS battle_time
+    NULLIF(clan_tag, 'NULL')::VARCHAR AS current_clan_tag
 
 FROM latest_player_info
 WHERE rn = 1

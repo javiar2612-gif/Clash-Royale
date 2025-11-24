@@ -1,0 +1,204 @@
+version: 2
+
+models:
+  - name: base_match_info__cards
+    description: ""
+    columns:
+      - name: card_id
+        data_type: number
+        description: ""
+
+      - name: card_name
+        data_type: varchar
+        description: ""
+
+      - name: card_type
+        data_type: varchar
+        description: ""
+
+      - name: cost
+        data_type: number
+        description: ""
+
+      - name: load_date
+        data_type: timestamp_ntz
+        description: ""
+
+  - name: base_match_info__wincons
+    description: ""
+    columns:
+      - name: card_id
+        data_type: number
+        description: ""
+
+      - name: card_name
+        data_type: varchar
+        description: ""
+
+      - name: load_date
+        data_type: timestamp_ntz
+        description: ""
+
+  - name: _stg_match_info__arenas
+    description: ""
+    columns:
+      - name: id
+        data_type: number
+        description: ""
+
+      - name: name
+        data_type: varchar
+        description: ""
+
+  - name: _stg_match_info__battle_decks
+    description: ""
+    columns:
+      - name: battle_id
+        data_type: varchar
+        description: ""
+
+      - name: player_tag
+        data_type: varchar
+        description: ""
+
+      - name: card_id
+        data_type: number
+        description: ""
+
+      - name: level
+        data_type: number
+        description: ""
+
+  - name: _stg_match_info__cards
+    description: ""
+    columns:
+      - name: card_id
+        data_type: number
+        description: ""
+
+      - name: card_name
+        data_type: varchar
+        description: ""
+
+      - name: card_type
+        data_type: varchar
+        description: ""
+
+      - name: cost
+        data_type: number
+        description: ""
+
+      - name: load_date
+        data_type: timestamp_ntz
+        description: ""
+
+      - name: is_wincon
+        data_type: boolean
+        description: ""
+
+  - name: _stg_match_info__clans
+    description: ""
+    columns:
+      - name: clan_tag
+        data_type: varchar
+        description: ""
+
+      - name: clan_badge_id
+        data_type: varchar
+        description: ""
+
+      - name: last_seen_battle_time
+        data_type: timestamp_ntz
+        description: ""
+
+  - name: _stg_match_info__matches
+    description: ""
+    columns:
+      - name: id
+        data_type: varchar
+        description: ""
+
+      - name: tournament_tag
+        data_type: varchar
+        description: ""
+
+      - name: battle_time
+        data_type: timestamp_ntz
+        description: ""
+
+      - name: arena_id
+        data_type: number
+        description: ""
+
+      - name: game_mode_id
+        data_type: number
+        description: ""
+
+      - name: avg_starting_trophies
+        data_type: number
+        description: ""
+
+  - name: _stg_match_info__players
+    description: ""
+    columns:
+      - name: tag
+        data_type: varchar
+        description: ""
+
+      - name: current_clan_tag
+        data_type: varchar
+        description: ""
+
+      - name: battle_time
+        data_type: timestamp_ntz
+        description: ""
+
+  - name: _stg_match_info__participants
+    description: "Modelo de staging que contiene la participación detallada de cada jugador en cada batalla."
+    columns:
+      - name: battle_id
+        data_type: varchar
+        description: "Identificador de la batalla."
+
+      - name: player_tag
+        data_type: varchar
+        description: "Tag del jugador participante."
+
+      - name: outcome
+        data_type: varchar
+        description: "Resultado para el jugador (win/lose/draw)."
+
+      - name: starting_trophies
+        data_type: number
+        description: "Trofeos iniciales del jugador antes de la batalla."
+
+      - name: trophy_change
+        data_type: number
+        description: "Cambio de trofeos tras la batalla."
+
+      - name: crowns
+        data_type: number
+        description: "Coronas obtenidas por el jugador."
+
+      - name: king_tower_hp
+        data_type: number
+        description: "Vida restante del rey al finalizar la batalla."
+
+  - name: _stg_match_info__towers
+    description: "Tabla de staging que desnormaliza las torres de cada jugador en cada batalla, generando una fila por torre (rey, princesa izquierda y princesa derecha) para cada participante."
+    columns:
+      - name: battle_id
+        data_type: varchar
+        description: "Identificador único de la batalla."
+
+      - name: player_tag
+        data_type: varchar
+        description: "Tag del jugador al que pertenece la torre."
+
+      - name: tower_type
+        data_type: varchar
+        description: "Tipo de torre: 'king', 'princess_left' o 'princess_right'."
+
+      - name: hitpoints
+        data_type: number
+        description: "Vida restante de la torre al finalizar la batalla."

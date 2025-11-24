@@ -15,10 +15,10 @@ sources:
 
       - name: match_data
         
-        loaded_at_field: _fivetran_synced
+        loaded_at_field: load_date
         freshness:
-          warn_after: {count: 600, period: day}
-          error_after: {count: 600, period: day}
+          warn_after: {count: 6000, period: day}
+          error_after: {count: 6000, period: day}
 
         columns:
           - name: id
@@ -226,5 +226,37 @@ sources:
           - name: loser_elixir_average
             tests:
               - not_null
-              
-          - name: _fivetran_synced
+          - name: load_date
+      - name: cards
+        columns:
+          - name: card_id
+            tests:
+              - not_null
+          - name: card_name
+            tests:
+              - not_null
+          - name: type
+            tests:
+              - not_null
+          - name: cost
+            tests:
+              - not_null
+          - name: load_date
+            tests:
+              - not_null      
+      - name: wincons
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+          - name: card_id
+            tests:
+              - not_null
+              - unique
+          - name: card_name
+            tests:
+              - not_null
+          - name: load_date
+            tests:
+              - not_null
