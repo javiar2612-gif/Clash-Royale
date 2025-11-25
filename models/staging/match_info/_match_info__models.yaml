@@ -1,9 +1,6 @@
 version: 2
 
 models:
-  # =========================================================================================================
-  # DIMENSIONES BASE (Base Lookups)
-  # =========================================================================================================
   - name: base_match_info__cards
     description: "Referencia fundamental de todas las cartas disponibles en el juego. Usada para lookup de coste y tipo."
     columns:
@@ -36,9 +33,6 @@ models:
         data_type: timestamp_ntz
         description: "Fecha de carga del registro."
 
-  # =========================================================================================================
-  # STAGING DE LOOKUP (Dimensiones)
-  # =========================================================================================================
   - name: _stg_match_info__arenas
     description: "Tabla de staging que limpia y clasifica los identificadores de las arenas de batalla."
     columns:
@@ -102,10 +96,6 @@ models:
       - name: last_seen_battle_time
         data_type: timestamp_ntz
         description: "Timestamp de la última batalla donde se vio al clan (usado para freshness)."
-
-  # =========================================================================================================
-  # STAGING DE HECHOS (Transacciones de Batalla)
-  # =========================================================================================================
   - name: _stg_match_info__matches
     description: "Modelo principal que contiene los metadatos de la batalla (header)."
     columns:
@@ -162,10 +152,6 @@ models:
       - name: crowns
         data_type: number
         description: "Coronas obtenidas por el jugador (0 a 3)."
-      - name: king_tower_hp
-        data_type: number
-        description: "Vida restante del rey al finalizar la batalla."
-
   - name: _stg_match_info__towers
     description: "Tabla de staging que desnormaliza las torres de cada jugador en cada batalla, generando una fila por torre (rey, princesa izquierda y princesa derecha) para cada participante."
     columns:
