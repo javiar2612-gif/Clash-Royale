@@ -14,6 +14,8 @@
             {% do select_fields.append(prefix ~ '_card' ~ i ~ '_id AS card_id') %}
             {% do select_fields.append(prefix ~ '_card' ~ i ~ '_level AS card_level') %}
             
+            {% do select_fields.append('load_date') %}  
+            
             {% set sql_block %}
                 SELECT
                     {{ select_fields | join(',\n\t\t') }}

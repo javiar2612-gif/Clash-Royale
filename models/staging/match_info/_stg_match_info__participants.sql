@@ -23,6 +23,7 @@ WITH unpivoted_participants AS (
 
 transformed AS (
     SELECT
+        {{ dbt_utils.generate_surrogate_key(['id','tag']) }} AS id,
         id::VARCHAR AS battle_id,
         tag::VARCHAR AS player_tag,
         outcome::VARCHAR AS outcome,

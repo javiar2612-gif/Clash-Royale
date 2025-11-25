@@ -1,19 +1,29 @@
-{{ config(
-    materialized='view'
-) }}
+{{
+    config(
+        materialized='incremental',
+        unique_key='id',
+        on_schema_change='fail'
+    )
+}}
 
 WITH all_decks_unpivoted AS (
 
     {{ unpivot_deck_cards() }}
+),
+
+transformed AS (
+    SELECT
+        {{ dbt_utils.generate_surrogate_key(['battle_id','player_tag','card_id']) }} AS id,
+        battle_id::VARCHAR AS battle_id,
+        player_tag::VARCHAR AS player_tag,
+        card_id::INTEGER AS card_id,
+        card_level::INTEGER AS level,
+        load_date
+    FROM all_decks_unpivoted
+
+    {% if is_incremental() %}
+    WHERE load_date > (SELECT MAX(t.load_date) FROM {{ this }} AS t)
+    {% endif %}
 )
 
-SELECT
-    battle_id::VARCHAR AS battle_id,
-    player_tag::VARCHAR AS player_tag,
-    card_id::INTEGER AS card_id,
-    card_level::INTEGER AS level
-FROM all_decks_unpivoted
-QUALIFY ROW_NUMBER() OVER (
-    PARTITION BY battle_id, player_tag, card_id 
-    ORDER BY 1
-) = 1
+SELECT * FROM transformed
