@@ -13,8 +13,8 @@ WITH all_decks_unpivoted AS (
 
 transformed AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['battle_id','player_tag','card_id']) }} AS id,
-        battle_id::VARCHAR AS battle_id,
+        {{ dbt_utils.generate_surrogate_key(['id','player_tag','card_id']) }} AS id,
+        {{ dbt_utils.generate_surrogate_key(['id','battleTime']) }} AS battle_id,
         player_tag::VARCHAR AS player_tag,
         card_id::INTEGER AS card_id,
         card_level::INTEGER AS level,
