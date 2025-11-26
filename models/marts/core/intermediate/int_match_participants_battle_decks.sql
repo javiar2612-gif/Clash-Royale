@@ -35,8 +35,6 @@ SELECT
     p.battle_time,
     d.load_date
 FROM battle_decks d
-LEFT JOIN  participants p
+LEFT JOIN participants p
     ON p.battle_id = d.battle_id
-
-
-
+    AND p.player_tag = d.player_tag  

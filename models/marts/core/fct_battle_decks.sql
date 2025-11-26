@@ -59,7 +59,7 @@ SELECT
 
 FROM base b
 LEFT JOIN players pl
-    ON pl.player_id= b.player_tag
+    ON pl.player_id = b.player_tag
 LEFT JOIN arenas a
     ON a.arena_id = b.arena_id
 LEFT JOIN dates d
