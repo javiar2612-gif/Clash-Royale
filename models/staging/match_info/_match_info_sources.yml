@@ -259,3 +259,11 @@ sources:
           - name: load_date
             tests:
               - not_null
+      - name: arenas
+        columns:
+          - name: arena_id
+            tests:
+              - not_null
+          - name: arena_name
+            tests:
+              - not_null

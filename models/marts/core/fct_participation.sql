@@ -50,6 +50,8 @@ SELECT
     b.crowns,
     c.clan_badge_id,
     c.last_seen_battle_time,
+    b.avg_card_level,
+    b.avg_elixir_cost,
     b.load_date
 FROM base b
 LEFT JOIN players pl

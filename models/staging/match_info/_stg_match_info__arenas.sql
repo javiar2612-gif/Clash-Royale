@@ -3,17 +3,16 @@
 ) }}
 
 WITH source AS (
-    SELECT DISTINCT
-        arena_id
+    SELECT
+    *
     FROM 
-        {{ source('match_info','match_data') }}
-    WHERE arena_id IS NOT NULL
+        {{ source('match_info','arenas') }}
 ),
 
 transformed AS (
     SELECT
         arena_id::INTEGER AS id,
-        NULL::VARCHAR AS name
+        arena_name ::VARCHAR AS arena_name
     FROM source
 )
 
