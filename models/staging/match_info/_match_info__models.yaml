@@ -7,15 +7,24 @@ models:
       - name: card_id
         data_type: number
         description: "ID numérico único de la carta (clave primaria)."
+        tests:
+          - unique
+          - not_null
       - name: card_name
         data_type: varchar
         description: "Nombre legible de la carta (ej: 'Bandida', 'El Tronco')."
+        tests:
+          - not_null
       - name: card_type
         data_type: varchar
         description: "Clasificación de la carta: Tropa (Troop), Hechizo (Spell), Estructura (Building) o Campeón (Champion)."
+        tests:
+          - not_null
       - name: cost
         data_type: number
         description: "Costo de elixir de la carta."
+        tests:
+          - not_null
       - name: load_date
         data_type: timestamp_ntz
         description: "Fecha en la que el registro de la carta fue cargado en el sistema de datos."
@@ -26,6 +35,8 @@ models:
       - name: card_id
         data_type: number
         description: "ID de la carta clasificada como Win Condition (clave foránea a 'base_match_info__cards')."
+        tests:
+          - not_null
       - name: card_name
         data_type: varchar
         description: "Nombre de la carta Win Condition."
@@ -39,9 +50,15 @@ models:
       - name: id
         data_type: number
         description: "ID numérico de la arena de batalla (ej: 54000050)."
+        tests:
+          - unique
+          - not_null
       - name: name
         data_type: varchar
         description: "Nombre legible de la arena (ej: 'Arena Legendaria')."
+      - name: load_date
+        data_type: timestamp_ntz
+        description: "Fecha de carga del registro."
 
   - name: _stg_match_info__battle_decks
     description: "Modelo desnormalizado que lista las 8 cartas usadas por cada jugador en cada batalla (una fila por carta)."
@@ -49,18 +66,28 @@ models:
       - name: id
         data_type: varchar
         description: "Clave subrogada única (battle_id + player_tag + card_id)."
+        tests:
+          - not_null
       - name: battle_id
         data_type: varchar
         description: "Identificador de la batalla (clave foránea a '_stg_match_info__matches')."
+        tests:
+          - not_null
       - name: player_tag
         data_type: varchar
         description: "Tag del jugador que usó la carta."
+        tests:
+          - not_null
       - name: card_id
         data_type: number
         description: "ID de la carta usada en el mazo."
+        tests:
+          - not_null
       - name: level
         data_type: number
         description: "Nivel de la carta utilizada en la batalla."
+        tests:
+          - not_null
       - name: load_date
         data_type: timestamp_ntz
         description: "Fecha de carga del registro."
@@ -71,6 +98,9 @@ models:
       - name: card_id
         data_type: number
         description: "ID numérico único de la carta."
+        tests:
+          - unique
+          - not_null
       - name: card_name
         data_type: varchar
         description: "Nombre de la carta."
@@ -83,6 +113,8 @@ models:
       - name: is_wincon
         data_type: boolean
         description: "Indica si la carta está clasificada como condición de victoria (TRUE/FALSE)."
+        tests:
+          - not_null
 
   - name: _stg_match_info__clans
     description: "Modelo de staging para clanes, incluyendo información del emblema (badge)."
@@ -90,27 +122,38 @@ models:
       - name: clan_tag
         data_type: varchar
         description: "Tag del clan (clave primaria)."
+        tests:
+          - unique
+          - not_null
       - name: clan_badge_id
         data_type: varchar
         description: "Identificador del emblema (badge) del clan."
       - name: last_seen_battle_time
         data_type: timestamp_ntz
         description: "Timestamp de la última batalla donde se vio al clan (usado para freshness)."
+
   - name: _stg_match_info__matches
     description: "Modelo principal que contiene los metadatos de la batalla (header)."
     columns:
       - name: id
         data_type: varchar
         description: "ID único de la batalla (clave primaria)."
+        tests:
+          - unique
+          - not_null
       - name: tournament_tag
         data_type: varchar
         description: "Tag del torneo si la batalla fue parte de uno."
       - name: battle_time
         data_type: timestamp_ntz
         description: "Timestamp exacto en el que ocurrió la batalla."
+        tests:
+          - not_null
       - name: arena_id
         data_type: number
         description: "ID de la arena donde se jugó la batalla (clave foránea a '_stg_match_info__arenas')."
+        tests:
+          - not_null
       - name: game_mode_id
         data_type: number
         description: "ID del modo de juego (ej: 1v1 ladder, 2v2, desafíos)."
@@ -127,6 +170,9 @@ models:
       - name: tag
         data_type: varchar
         description: "Tag del jugador (clave primaria)."
+        tests:
+          - unique
+          - not_null
       - name: current_clan_tag
         data_type: varchar
         description: "Tag del clan actual del jugador (clave foránea a '_stg_match_info__clans'). Puede ser nulo."
@@ -137,12 +183,18 @@ models:
       - name: battle_id
         data_type: varchar
         description: "Identificador de la batalla (clave foránea a '_stg_match_info__matches')."
+        tests:
+          - not_null
       - name: player_tag
         data_type: varchar
         description: "Tag del jugador participante (clave foránea a '_stg_match_info__players')."
+        tests:
+          - not_null
       - name: outcome
         data_type: varchar
         description: "Resultado para el jugador ('win', 'lose', o 'draw')."
+        tests:
+          - not_null
       - name: starting_trophies
         data_type: number
         description: "Trofeos iniciales del jugador antes de la batalla."
@@ -152,18 +204,27 @@ models:
       - name: crowns
         data_type: number
         description: "Coronas obtenidas por el jugador (0 a 3)."
+        tests:
+          - not_null
+
   - name: _stg_match_info__towers
     description: "Tabla de staging que desnormaliza las torres de cada jugador en cada batalla, generando una fila por torre (rey, princesa izquierda y princesa derecha) para cada participante."
     columns:
       - name: battle_id
         data_type: varchar
         description: "Identificador único de la batalla (clave foránea a '_stg_match_info__matches')."
+        tests:
+          - not_null
       - name: player_tag
         data_type: varchar
         description: "Tag del jugador al que pertenece la torre (clave foránea a '_stg_match_info__participants')."
+        tests:
+          - not_null
       - name: tower_type
         data_type: varchar
         description: "Tipo de torre: 'king', 'princess_left' o 'princess_right'."
+        tests:
+          - not_null
       - name: hitpoints
         data_type: number
         description: "Vida restante de la torre al finalizar la batalla (0 si fue destruida)."

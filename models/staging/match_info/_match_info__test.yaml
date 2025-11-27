@@ -1,0 +1,59 @@
+version: 2
+
+unit_tests:
+  - name: test_stg_match_info_towers_basic
+    model: _stg_match_info__towers
+
+    overrides:
+      macros:
+        is_incremental: false
+
+    given:
+      - input: source('match_info', 'match_data')
+        rows:
+          - id: "B123"
+            winner_tag: "#W"
+            winner_kingTowerHitPoints: "[4000]"
+            winner_princessTowersHitPoints: "[2534, 1980]"
+            loser_tag: "#L"
+            loser_kingTowerHitPoints: "[0]"
+            loser_princessTowersHitPoints: "[0, 0]"
+            load_date: "2025-01-01 12:00:00"
+
+    expect:
+      rows:
+        - battle_id: "B123"
+          player_tag: "#W"
+          tower_type: "king"
+          hitpoints: 4000
+          load_date: "2025-01-01 12:00:00"
+
+        - battle_id: "B123"
+          player_tag: "#W"
+          tower_type: "princess_left"
+          hitpoints: 2534
+          load_date: "2025-01-01 12:00:00"
+
+        - battle_id: "B123"
+          player_tag: "#W"
+          tower_type: "princess_right"
+          hitpoints: 1980
+          load_date: "2025-01-01 12:00:00"
+
+        - battle_id: "B123"
+          player_tag: "#L"
+          tower_type: "king"
+          hitpoints: 0
+          load_date: "2025-01-01 12:00:00"
+
+        - battle_id: "B123"
+          player_tag: "#L"
+          tower_type: "princess_left"
+          hitpoints: 0
+          load_date: "2025-01-01 12:00:00"
+
+        - battle_id: "B123"
+          player_tag: "#L"
+          tower_type: "princess_right"
+          hitpoints: 0
+          load_date: "2025-01-01 12:00:00"

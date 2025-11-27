@@ -13,6 +13,7 @@ WITH card_stats AS (
     FROM {{ ref('fct_battle_decks') }} b
     LEFT JOIN {{ ref('dim_card') }} ca
         ON ca.card_id = b.card_id
+        WHERE b.starting_trophies >=6000
     GROUP BY 1, 2, 3
 ),
 

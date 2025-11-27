@@ -1,5 +1,7 @@
 {{ config(
-    materialized='view'
+    materialized='incremental',
+    unique_key='unique_id', 
+    on_schema_change='fail'
 ) }}
 
 WITH base AS (
@@ -9,7 +11,8 @@ WITH base AS (
             'id',
             'tag',
             'kingTowerHitPoints',
-            'princessTowersHitPoints'
+            'princessTowersHitPoints',
+            'load_date'
         ],
         participant_fields=[
             'tag',
@@ -24,11 +27,16 @@ clean AS (
     SELECT
         id::VARCHAR AS battle_id,
         tag::VARCHAR AS player_tag,
+        load_date,
 
         TRY_TO_NUMBER(REGEXP_REPLACE(kingTowerHitPoints, '\\[|\\]', '')) AS king_hp,
 
         SPLIT(REGEXP_REPLACE(princessTowersHitPoints, '\\[|\\]', ''), ',') AS princess_array
     FROM base
+
+    {% if is_incremental() %}
+    WHERE load_date > (SELECT MAX(load_date) FROM {{ this }})
+    {% endif %}
 ),
 
 princess AS (
@@ -41,7 +49,9 @@ princess AS (
             WHEN INDEX = 1 THEN 'princess_right'
         END AS tower_type,
 
-        TRY_TO_NUMBER(value::STRING) AS hitpoints   -- 🔥 FIX AQUI
+        TRY_TO_NUMBER(value::STRING) AS hitpoints,
+        load_date,
+        SHA1(battle_id || player_tag || tower_type) AS unique_id 
     FROM clean,
     LATERAL FLATTEN(input => princess_array)
 ),
@@ -51,10 +61,26 @@ king AS (
         battle_id,
         player_tag,
         'king' AS tower_type,
-        king_hp AS hitpoints
+        king_hp AS hitpoints,
+        load_date,
+        SHA1(battle_id || player_tag || 'king') AS unique_id 
     FROM clean
 )
 
-SELECT * FROM king
+SELECT 
+    unique_id::VARCHAR AS unique_id,
+    battle_id::VARCHAR AS battle_id,
+    player_tag::VARCHAR AS player_tag,
+    tower_type::VARCHAR AS tower_type,
+    hitpoints::INT AS hitpoints,
+    load_date::TIMESTAMP_NTZ AS load_date
+FROM king
 UNION ALL
-SELECT * FROM princess
+SELECT 
+    unique_id::VARCHAR AS unique_id,
+    battle_id::VARCHAR AS battle_id,
+    player_tag::VARCHAR AS player_tag,
+    tower_type::VARCHAR AS tower_type,
+    hitpoints::INT AS hitpoints,
+    load_date::TIMESTAMP_NTZ AS load_date
+FROM princess

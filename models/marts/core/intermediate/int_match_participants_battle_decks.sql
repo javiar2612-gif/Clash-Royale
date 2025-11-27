@@ -1,25 +1,19 @@
 {{
     config(
-        materialized='incremental',
-        unique_key='id',
-        on_schema_change='fail'
+        materialized='view'
     )
 }}
 
 WITH participants AS (
     SELECT *
     FROM {{ ref("int_match_participants") }}
-    {% if is_incremental() %}
-        WHERE load_date > (SELECT MAX(load_date) FROM {{ this }})
-    {% endif %}
+    -- Removed incremental logic: WHERE load_date > (SELECT MAX(load_date) FROM {{ this }})
 ),
 
 battle_decks AS (
     SELECT *
     FROM {{ ref("_stg_match_info__battle_decks") }}
-    {% if is_incremental() %}
-        WHERE load_date > (SELECT MAX(load_date) FROM {{ this }})
-    {% endif %}
+    -- Removed incremental logic: WHERE load_date > (SELECT MAX(load_date) FROM {{ this }})
 )
 
 SELECT
@@ -37,4 +31,4 @@ SELECT
 FROM battle_decks d
 LEFT JOIN participants p
     ON p.battle_id = d.battle_id
-    AND p.player_tag = d.player_tag  
+    AND p.player_tag = d.player_tag
