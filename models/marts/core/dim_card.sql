@@ -8,7 +8,7 @@ SELECT
     IS_WINCON,
     CONCAT(
         'https://royaleapi.github.io/cr-api-assets/cards/',
-        REPLACE(LOWER(CARD_NAME), ' ', '-'), -- Transforma a minúsculas y reemplaza espacios por guiones
+        REPLACE(LOWER(CARD_NAME), ' ', '-'), 
         '.png'
     ) AS CARD_IMAGE_URL
 FROM {{ ref("_stg_match_info__cards") }}
