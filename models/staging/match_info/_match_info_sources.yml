@@ -13,14 +13,17 @@ sources:
 
     tables:
 
-      - name: MATCH_DATA
-        config:
-          loaded_at_field: _fivetran_synced
+      - name: match_data
+        
+        loaded_at_field: load_date
+        freshness:
+          warn_after: {count: 6000, period: day}
+          error_after: {count: 6000, period: day}
+
         columns:
           - name: id
             tests:
               - not_null
-              - unique # Sugerido para ID
           - name: battleTime
             tests:
               - not_null
@@ -45,10 +48,10 @@ sources:
           - name: winner_crowns
             tests:
               - not_null
-          - name: winner_kingTowerHitPoints # EXCLUIDO: Permite nulos
-          - name: winner_princessTowersHitPoints # EXCLUIDO: Permite nulos
-          - name: winner_clan_tag # EXCLUIDO: Permite nulos
-          - name: winner_clan_badgeId # EXCLUIDO: Permite nulos
+          - name: winner_kingTowerHitPoints 
+          - name: winner_princessTowersHitPoints 
+          - name: winner_clan_tag 
+          - name: winner_clan_badgeId 
           - name: loser_tag
             tests:
               - not_null
@@ -61,11 +64,11 @@ sources:
           - name: loser_crowns
             tests:
               - not_null
-          - name: loser_kingTowerHitPoints # EXCLUIDO: Permite nulos
-          - name: loser_clan_tag # EXCLUIDO: Permite nulos
-          - name: loser_clan_badgeId # EXCLUIDO: Permite nulos
-          - name: loser_princessTowersHitPoints # EXCLUIDO: Permite nulos
-          - name: tournamentTag # EXCLUIDO: Permite nulos
+          - name: loser_kingTowerHitPoints 
+          - name: loser_clan_tag 
+          - name: loser_clan_badgeId 
+          - name: loser_princessTowersHitPoints 
+          - name: tournamentTag 
           - name: winner_card1_id
             tests:
               - not_null
@@ -222,11 +225,45 @@ sources:
           - name: loser_elixir_average
             tests:
               - not_null
-          - name: _fivetran_synced 
+          - name: load_date
+      - name: cards
+        columns:
+          - name: card_id
             tests:
               - not_null
-
-    config:
-      freshness:
-        warn_after: {count: 600, period: day}
-        error_after: {count: 600, period: day}
+          - name: card_name
+            tests:
+              - not_null
+          - name: type
+            tests:
+              - not_null
+          - name: cost
+            tests:
+              - not_null
+          - name: load_date
+            tests:
+              - not_null      
+      - name: wincons
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+          - name: card_id
+            tests:
+              - not_null
+              - unique
+          - name: card_name
+            tests:
+              - not_null
+          - name: load_date
+            tests:
+              - not_null
+      - name: arenas
+        columns:
+          - name: arena_id
+            tests:
+              - not_null
+          - name: arena_name
+            tests:
+              - not_null
